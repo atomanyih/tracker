@@ -5,12 +5,34 @@ describe MessageGenerator do
     it 'adds the story id' do
       message = MessageGenerator.generate(original_message: <<-TEXT, story_id: 12345)
 hey I don't have a tracker story
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+# deleted:   .ego
+# modified:  .super-ego
+#
+# Untracked files:
+# .id
+#
       TEXT
 
       expect(message).to eq(<<-TEXT)
 hey I don't have a tracker story
 
 [#12345]
+
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+# On branch master
+# Changes to be committed:
+# deleted:   .ego
+# modified:  .super-ego
+#
+# Untracked files:
+# .id
+#
       TEXT
     end
   end
