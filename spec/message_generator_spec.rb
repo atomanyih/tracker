@@ -3,7 +3,7 @@ require_relative '../lib/message_generator'
 describe MessageGenerator do
   context 'original message does not have a story tag' do
     it 'adds the story id' do
-      message = MessageGenerator.generate(original_message: <<-TEXT, story_id: 12345)
+      message = MessageGenerator.new.generate(original_message: <<-TEXT, story_id: 12345)
 hey I don't have a tracker story
 
 # Please enter the commit message for your changes. Lines starting
@@ -39,7 +39,7 @@ hey I don't have a tracker story
 
   context 'original message has a tracker tag' do
     it 'returns the original message' do
-      message = MessageGenerator.generate(original_message: <<-TEXT, story_id: 12345)
+      message = MessageGenerator.new.generate(original_message: <<-TEXT, story_id: 12345)
 hey I have a tracker story
 
 [#54321]
