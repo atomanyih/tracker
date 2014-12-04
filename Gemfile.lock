@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    Tracker Git Hook (0.0.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -19,4 +24,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rspec
+  Tracker Git Hook!
+  rspec (>= 3)
