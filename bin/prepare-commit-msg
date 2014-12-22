@@ -6,6 +6,6 @@ message_file = ARGV[0]
 original_message = File.read(message_file)
 story_id = ENV['TRACKER_STORY_ID']
 
-message = MessageGenerator.generate(original_message: original_message, story_id: story_id)
+message = MessageGenerator.new.generate(original_message: original_message, story_id: story_id)
 
 File.open(message_file, 'w') { |f| f.write(message) }
