@@ -1,4 +1,4 @@
-require_relative '../lib/message_generator'
+require 'message_generator'
 
 describe MessageGenerator do
   context 'original message does not have a story tag' do

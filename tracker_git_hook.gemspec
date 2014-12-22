@@ -7,9 +7,9 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables << 'story'
 
+  s.files = 'lib/message_generator.rb'
+
   s.required_ruby_version = '~> 2.1'
 
   s.add_development_dependency 'rspec', '~> 3'
-
-
 end
