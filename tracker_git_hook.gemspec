@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables << 'story'
 
-  s.files = 'lib/message_generator.rb'
+  s.files = Dir['lib/**/*.rb']
 
   s.required_ruby_version = '~> 2.1'
 
