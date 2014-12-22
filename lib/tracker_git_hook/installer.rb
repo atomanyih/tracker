@@ -10,6 +10,7 @@ module TrackerGitHook
 
       File.open(hook_path, 'w') do |f|
         f.write(@hook)
+        f.chmod(0755)
       end
     end
   end

@@ -15,6 +15,7 @@ module TrackerGitHook
 
         expect(File.exists?(expected_hook_path)).to eq(true)
         expect(File.read(expected_hook_path)).to eq('yo what')
+        expect(File.executable?(expected_hook_path)).to eq(true)
       end
     end
   end
