@@ -1,9 +1,10 @@
-require 'message_generator'
+require 'tracker_git_hook/message_generator'
 
-describe MessageGenerator do
-  context 'original message does not have a story tag' do
-    it 'adds the story id' do
-      message = MessageGenerator.new.generate(original_message: <<-TEXT, story_id: 12345)
+module TrackerGitHook
+  describe MessageGenerator do
+    context 'original message does not have a story tag' do
+      it 'adds the story id' do
+        message = MessageGenerator.new.generate(original_message: <<-TEXT, story_id: 12345)
 hey I don't have a tracker story
 
 # Please enter the commit message for your changes. Lines starting
@@ -16,9 +17,9 @@ hey I don't have a tracker story
 # Untracked files:
 # .id
 #
-      TEXT
+        TEXT
 
-      expect(message).to eq(<<-TEXT)
+        expect(message).to eq(<<-TEXT)
 hey I don't have a tracker story
 
 [#12345]
@@ -33,29 +34,29 @@ hey I don't have a tracker story
 # Untracked files:
 # .id
 #
-      TEXT
+        TEXT
+      end
     end
-  end
 
-  context 'original message has a tracker tag' do
-    it 'returns the original message' do
-      message = MessageGenerator.new.generate(original_message: <<-TEXT, story_id: 12345)
+    context 'original message has a tracker tag' do
+      it 'returns the original message' do
+        message = MessageGenerator.new.generate(original_message: <<-TEXT, story_id: 12345)
 hey I have a tracker story
 
 [#54321]
-      TEXT
+        TEXT
 
-      expect(message).to eq(<<-TEXT)
+        expect(message).to eq(<<-TEXT)
 hey I have a tracker story
 
 [#54321]
-      TEXT
+        TEXT
+      end
     end
-  end
 
-  context 'whatever git ci -v puts out' do
-    it 'adds the story id without messing everything up' do
-      original_message = <<-TEXT
+    context 'whatever git ci -v puts out' do
+      it 'adds the story id without messing everything up' do
+        original_message = <<-TEXT
 
 # Please enter the commit message for your changes. Lines starting
 # with '#' will be ignored, and an empty message aborts the commit.
@@ -73,9 +74,9 @@ index 0000000..eca07e4
 +++ b/.ruby-version
 @@ -0,0 +1 @@
 +2.1.2
-      TEXT
+        TEXT
 
-      expected_message = <<-TEXT
+        expected_message = <<-TEXT
 
 [#12345]
 
@@ -95,11 +96,12 @@ index 0000000..eca07e4
 +++ b/.ruby-version
 @@ -0,0 +1 @@
 +2.1.2
-      TEXT
+        TEXT
 
-      message = MessageGenerator.new.generate(original_message: original_message, story_id: 12345)
+        message = MessageGenerator.new.generate(original_message: original_message, story_id: 12345)
 
-      expect(message).to eq(expected_message)
+        expect(message).to eq(expected_message)
+      end
     end
   end
 end
