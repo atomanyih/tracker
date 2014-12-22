@@ -21,7 +21,7 @@ module TrackerGitHook
     private
 
     def story_id
-      Repo.new(root_path: Dir.pwd).get_story_id
+      Repo.discover(path: Dir.pwd).get_story_id
     end
   end
 end

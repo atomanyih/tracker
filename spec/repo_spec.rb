@@ -50,5 +50,41 @@ module TrackerGitHook
         end
       end
     end
+
+    describe '.discover' do
+      context 'in the root of a git repo' do
+        it 'creates a repo with the current directory' do
+          Dir.mktmpdir do |repo_path|
+            `cd #{repo_path} && git init`
+
+            repo = Repo.discover(path: repo_path)
+            expect(repo.root_path).to eq(repo_path)
+          end
+        end
+      end
+
+      context 'in a subfolder of a git repo' do
+        it 'finds the root' do
+          Dir.mktmpdir do |repo_path|
+            `cd #{repo_path} && git init && mkdir folder`
+
+            path = File.join(repo_path, 'folder')
+
+            repo = Repo.discover(path: path)
+            expect(repo.root_path).to eq(repo_path)
+          end
+        end
+      end
+
+      context 'outside of a git repo' do
+        it 'freaks out' do
+          Dir.mktmpdir do |path|
+            expect {
+              Repo.discover(path: path)
+            }.to raise_error("Not in a git repo")
+          end
+        end
+      end
+    end
   end
 end
