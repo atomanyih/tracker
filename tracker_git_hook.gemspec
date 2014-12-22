@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.authors = ['August Toman-Yih']
 
   s.bindir = 'bin'
-  s.executables << 'tracker'
+  s.executables << 'story'
 
   s.required_ruby_version = '~> 2.1'
 
