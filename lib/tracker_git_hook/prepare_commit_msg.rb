@@ -1,4 +1,5 @@
 require 'tracker_git_hook/message_generator'
+require 'tracker_git_hook/repo'
 
 module TrackerGitHook
   class PrepareCommitMsg
@@ -16,7 +17,7 @@ module TrackerGitHook
     private
 
     def story_id
-      ENV['TRACKER_STORY_ID']
+      Repo.new(root_path: Dir.pwd).get_story_id
     end
   end
 end
