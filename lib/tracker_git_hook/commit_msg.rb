@@ -1,5 +1,5 @@
 require 'tracker_git_hook/repo'
-require 'tracker_git_hook/check_story_status'
+require 'tracker_git_hook/story_status_checker'
 
 module TrackerGitHook
   class CommitMsg
@@ -8,7 +8,7 @@ module TrackerGitHook
 
       repo = Repo.discover(path: Dir.pwd)
 
-      CheckStoryStatus.new(repo: repo).check(message)
+      StoryStatusChecker.new(repo: repo).check(message)
     end
   end
 end

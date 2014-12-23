@@ -31,7 +31,16 @@ module TrackerGitHook
     end
 
     context 'message is not tagged as finished' do
-      let(:keyword) { "" }
+      let(:keyword) { '' }
+
+      it 'does not clear story id' do
+        expect(repo).not_to receive(:clear_story_id)
+        StoryStatusChecker.new(repo: repo).check(message)
+      end
+    end
+
+    context 'message is not tagged' do
+      let(:message) { 'whadup' }
 
       it 'does not clear story id' do
         expect(repo).not_to receive(:clear_story_id)

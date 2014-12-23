@@ -15,7 +15,6 @@ module TrackerGitHook
     private
 
     def contains_completion_keyword?(message)
-
       word = parse_message(message)[1]
       if word
         word.downcase.include? 'finish'
@@ -31,7 +30,7 @@ module TrackerGitHook
 
     def parse_message(message)
       regex = /\[\s*(\w*)\s*#(\d+)\s*\]/
-      regex.match(message)
+      regex.match(message) || []
     end
   end
 end
