@@ -3,20 +3,13 @@ require 'tmpdir'
 
 module TrackerGitHook
   describe Installer do
-    it 'creates a prepare-commit-msg file in the .git/hooks directory' do
-      Dir.mktmpdir do |target_dir|
-        `cd #{target_dir} && git init`
+    it 'installs a hook for adding the story id' do
+      repo = double(:repo)
 
-        installer = Installer.new(target_dir: target_dir, hook: 'yo what')
+      expect(repo).to receive(:install_hook).
+        with(an_instance_of(AddStoryIdHook))
 
-        installer.install
-
-        expected_hook_path = File.join(target_dir, '.git', 'hooks', 'prepare-commit-msg')
-
-        expect(File.exists?(expected_hook_path)).to eq(true)
-        expect(File.read(expected_hook_path)).to eq('yo what')
-        expect(File.executable?(expected_hook_path)).to eq(true)
-      end
+      Installer.new(repo: repo).install
     end
   end
 end

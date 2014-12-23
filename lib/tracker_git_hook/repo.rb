@@ -33,6 +33,15 @@ module TrackerGitHook
       end
     end
 
+    def install_hook(hook)
+      hook_path = File.join(root_path, '.git', 'hooks', hook.filename)
+
+      File.open(hook_path, 'w') do |f|
+        f.write(hook.script)
+        f.chmod(0755)
+      end
+    end
+
     private
 
     def story_file_path
