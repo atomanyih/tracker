@@ -33,6 +33,10 @@ module TrackerGitHook
       end
     end
 
+    def clear_story_id
+      set_story_id(nil)
+    end
+
     def install_hook(hook)
       hook_path = File.join(root_path, '.git', 'hooks', hook.filename)
 

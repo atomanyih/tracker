@@ -47,6 +47,16 @@ module TrackerGitHook
       end
     end
 
+    describe '#clear_story_id' do
+      it 'unsets the story id' do
+        with_git_repo do |repo_path|
+          repo = Repo.new(root_path: repo_path)
+          repo.set_story_id '12345'
+          repo.clear_story_id
+          expect(repo.get_story_id).to eq(nil)
+        end
+      end
+    end
     describe '.discover' do
       context 'in the root of a git repo' do
         it 'creates a repo with the current directory' do

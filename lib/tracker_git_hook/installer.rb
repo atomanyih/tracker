@@ -6,6 +6,7 @@ module TrackerGitHook
 
     def install
       @repo.install_hook(AddStoryIdHook.new)
+      @repo.install_hook(CheckStoryIdHook.new)
     end
   end
 
@@ -19,6 +20,19 @@ TrackerGitHook::PrepareCommitMsg.new.prepare message_file_path: ARGV[0]" $1
 
     def filename
       'prepare-commit-msg'
+    end
+  end
+
+  class CheckStoryIdHook
+    def script
+      <<-BASH
+/usr/bin/env ruby -e "require 'tracker_git_hook/post_commit';
+TrackerGitHook::PostCommit.new.run(message_file_path: ARGV[0])" $1
+      BASH
+    end
+
+    def filename
+      'commit-msg'
     end
   end
 end

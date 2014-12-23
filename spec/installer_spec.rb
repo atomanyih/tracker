@@ -9,6 +9,9 @@ module TrackerGitHook
       expect(repo).to receive(:install_hook).
         with(an_instance_of(AddStoryIdHook))
 
+      expect(repo).to receive(:install_hook).
+        with(an_instance_of(CheckStoryIdHook))
+
       Installer.new(repo: repo).install
     end
   end
