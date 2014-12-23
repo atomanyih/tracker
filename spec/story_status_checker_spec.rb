@@ -23,7 +23,7 @@ module TrackerGitHook
     end
 
     context 'multiple story ids' do
-      let(:message) {"[#{keyword}  #5837 ##{message_story_id} #1564 #234583]"}
+      let(:message) { "[#{keyword}  #5837 ##{message_story_id} #1564 #234583]" }
 
       it 'clears the story id' do
         expect(repo).to receive(:clear_story_id)
@@ -35,7 +35,7 @@ module TrackerGitHook
   describe StoryStatusChecker do
     let(:message) { "[#{keyword}   ##{message_story_id}]" }
 
-    let(:repo) { double(:repo, get_story_id: repo_story_id) }
+    let(:repo) { double(:repo, current_story_id: repo_story_id) }
     let(:repo_story_id) { '12345' }
     let(:message_story_id) { repo_story_id }
 

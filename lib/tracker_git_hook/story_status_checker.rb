@@ -16,10 +16,10 @@ module TrackerGitHook
 
     def contains_completion_keyword?(message)
       word = parse_message(message)[1]
-      if word
-        completion_keywords.any? do |keyword|
-          word.downcase.include? keyword
-        end
+      return false unless word
+
+      completion_keywords.any? do |keyword|
+        word.downcase.include? keyword
       end
     end
 
@@ -30,7 +30,7 @@ module TrackerGitHook
     def contains_current_story_id?(message)
       message_story_ids = parse_message(message)[2]
 
-      message_story_ids.include? repo.get_story_id
+      message_story_ids.include? repo.current_story_id
     end
 
     def parse_message(message)

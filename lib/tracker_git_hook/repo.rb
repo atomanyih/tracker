@@ -3,14 +3,14 @@ module TrackerGitHook
     def self.discover(path:)
       git_directory = File.join(path, '.git')
 
-      if File.exists?(git_directory)
+      if File.exist?(git_directory)
         Repo.new(root_path: path)
       else
         parent_path = File.dirname(path)
-        if parent_path == path
-          raise "Not in a git repo"
-        end
-        self.discover(path: parent_path)
+
+        fail 'Not in a git repo' if parent_path == path
+
+        discover(path: parent_path)
       end
     end
 
@@ -20,21 +20,22 @@ module TrackerGitHook
       @root_path = root_path
     end
 
-    def set_story_id(story_id)
+    def current_story_id=(story_id)
       File.open(story_file_path, 'w') do |f|
         f.write(story_id)
       end
     end
 
-    def get_story_id
-      if File.exists?(story_file_path)
-        story_id = File.read(story_file_path)
-        return story_id unless story_id.empty?
-      end
+    def current_story_id
+      return unless File.exist?(story_file_path)
+
+      story_id = File.read(story_file_path)
+
+      story_id unless story_id.empty?
     end
 
     def clear_story_id
-      set_story_id(nil)
+      self.current_story_id = nil
     end
 
     def install_hook(hook)

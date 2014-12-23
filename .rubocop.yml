@@ -1,0 +1,29 @@
+Style/DoubleNegation:
+    Enabled: false
+
+Style/DotPosition:
+    Enabled: true
+    EnforcedStyle: trailing
+
+Style/NumericLiterals:
+    Enabled: false
+
+Style/Blocks:
+    Exclude:
+      - 'spec/**/*'
+
+Style/AccessorMethodName:
+    Exclude:
+      - 'spec/**/*'
+
+Style/GuardClause:
+    Enabled: false
+
+Documentation:
+    Enabled: false
+
+Metrics/LineLength:
+    Enabled: false
+
+Metrics/MethodLength:
+    Enabled: false

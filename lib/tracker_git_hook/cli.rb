@@ -10,21 +10,25 @@ module TrackerGitHook
       argument = args[0]
 
       if argument
-        if is_story_id?(argument)
-          repo.set_story_id(argument)
-        elsif argument == 'finish'
-          repo.clear_story_id
-        elsif argument == 'whale'
-          puts whale
-        else
-          puts usage
-        end
+        process_argument(argument)
       else
-        puts repo.get_story_id
+        puts repo.current_story_id
       end
     end
 
     private
+
+    def process_argument(argument)
+      if story_id?(argument)
+        repo.current_story_id = argument
+      elsif argument == 'finish'
+        repo.clear_story_id
+      elsif argument == 'whale'
+        puts whale
+      else
+        puts usage
+      end
+    end
 
     def usage
       'Usage: story [ <story_id> | finish ]'
@@ -52,7 +56,7 @@ module TrackerGitHook
       WHALE
     end
 
-    def is_story_id?(string)
+    def story_id?(string)
       !!/^\d+$/.match(string)
     end
   end

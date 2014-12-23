@@ -6,16 +6,16 @@ module TrackerGitHook
       it 'writes the story id into the .git folder' do
         with_git_repo do |repo_path|
           repo = Repo.new(root_path: repo_path)
-          repo.set_story_id('12345')
+          repo.current_story_id = '12345'
 
           story_file_path = File.join(repo_path, '.git', 'tracker_story_id')
-          expect(File.exists?(story_file_path)).to eq(true)
+          expect(File.exist?(story_file_path)).to eq(true)
           expect(File.read(story_file_path)).to eq('12345')
         end
       end
     end
 
-    describe '#get_story_id' do
+    describe '#current_story_id' do
       it 'gets the story id from file' do
         with_git_repo do |repo_path|
           story_file_path = File.join(repo_path, '.git', 'tracker_story_id')
@@ -24,14 +24,14 @@ module TrackerGitHook
           end
 
           repo = Repo.new(root_path: repo_path)
-          expect(repo.get_story_id).to eq('54321')
+          expect(repo.current_story_id).to eq('54321')
         end
       end
 
       it 'returns nil if story file does no exist' do
         with_git_repo do |repo_path|
           repo = Repo.new(root_path: repo_path)
-          expect(repo.get_story_id).to eq(nil)
+          expect(repo.current_story_id).to eq(nil)
         end
       end
 
@@ -42,7 +42,7 @@ module TrackerGitHook
           File.open(story_file_path, 'w')
 
           repo = Repo.new(root_path: repo_path)
-          expect(repo.get_story_id).to eq(nil)
+          expect(repo.current_story_id).to eq(nil)
         end
       end
     end
@@ -51,9 +51,9 @@ module TrackerGitHook
       it 'unsets the story id' do
         with_git_repo do |repo_path|
           repo = Repo.new(root_path: repo_path)
-          repo.set_story_id '12345'
+          repo.current_story_id = '12345'
           repo.clear_story_id
-          expect(repo.get_story_id).to eq(nil)
+          expect(repo.current_story_id).to eq(nil)
         end
       end
     end
@@ -85,7 +85,7 @@ module TrackerGitHook
           Dir.mktmpdir do |path|
             expect {
               Repo.discover(path: path)
-            }.to raise_error("Not in a git repo")
+            }.to raise_error('Not in a git repo')
           end
         end
       end
@@ -100,7 +100,7 @@ module TrackerGitHook
           repo.install_hook(hook)
 
           expected_hook_path = File.join(repo_path, '.git', 'hooks', 'hook')
-          expect(File.exists?(expected_hook_path)).to eq(true)
+          expect(File.exist?(expected_hook_path)).to eq(true)
           expect(File.read(expected_hook_path)).to eq('yo')
           expect(File.executable?(expected_hook_path)).to eq(true)
         end

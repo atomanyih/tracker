@@ -9,13 +9,13 @@ describe 'workflow' do
     Workflow.in_git_repo do |flow|
       flow.add_new_file_to_commit(filename: 'file.txt')
 
-      flow.set_current_story(story_id: '12345')
+      flow.assign_current_story(story_id: '12345')
       expect(
         flow.commit(commit_message: 'adds new file')
       ).to include('[#12345]')
 
       expect(
-        flow.get_current_story
+        flow.show_current_story
       ).to include('12345')
 
       flow.add_new_file_to_commit(filename: 'other_file.txt')
@@ -32,7 +32,7 @@ describe 'workflow' do
 
   it 'clears story id via cli' do
     Workflow.in_git_repo do |flow|
-      flow.set_current_story(story_id: '12345')
+      flow.assign_current_story(story_id: '12345')
 
       flow.add_new_file_to_commit(filename: 'file.txt')
       expect(
@@ -44,7 +44,7 @@ describe 'workflow' do
       flow.add_new_file_to_commit(filename: 'another_file.txt')
 
       expect(
-        flow.get_current_story
+        flow.show_current_story
       ).to eq("\n")
 
       expect(
@@ -68,11 +68,11 @@ describe 'workflow' do
 
     attr_reader :repo_path
 
-    def set_current_story(story_id:)
+    def assign_current_story(story_id:)
       `cd #{repo_path} && story #{story_id}`
     end
 
-    def get_current_story
+    def show_current_story
       `cd #{repo_path} && story`
     end
 

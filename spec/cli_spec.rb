@@ -7,9 +7,9 @@ module TrackerGitHook
 
     context 'without argument' do
       it 'prints current story' do
-        expect(repo).to receive(:get_story_id).and_return('12355')
+        expect(repo).to receive(:current_story_id).and_return('12355')
         expect {
-          cli.process_arguments()
+          cli.process_arguments
         }.to output("12355\n").to_stdout
       end
     end
@@ -17,7 +17,7 @@ module TrackerGitHook
     context 'with argument' do
       context 'argument is story id' do
         it 'sets the story id' do
-          expect(repo).to receive(:set_story_id).with('12355')
+          expect(repo).to receive(:current_story_id=).with('12355')
           cli.process_arguments('12355')
         end
       end
