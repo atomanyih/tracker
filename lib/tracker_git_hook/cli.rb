@@ -14,6 +14,8 @@ module TrackerGitHook
           repo.set_story_id(argument)
         elsif argument == 'finish'
           repo.clear_story_id
+        elsif argument == 'whale'
+          puts whale
         else
           puts usage
         end
@@ -22,8 +24,32 @@ module TrackerGitHook
       end
     end
 
+    private
+
     def usage
       'Usage: story [ <story_id> | finish ]'
+    end
+
+    def whale
+      <<-'WHALE'
+
+      __________...----..____..-'``-..___
+    ,'.                                  ```--.._
+   :                                             ``._
+   |                           --                    ``.
+   |                    ಠ          -.     -   -.        `.
+   :                     __           --            .     \
+    `._____________     (  `.   -.-      --  -   .   `     \
+       `-----------------\   \_.--------..__..--.._ `. `.   :
+                          `--'                     `-._ .   |
+                                                       `.`  |
+                                                         \` |
+                                                          \ |
+                                                          / \`.
+                                                         /  _\-'
+                                                        /_,'
+
+      WHALE
     end
 
     def is_story_id?(string)
