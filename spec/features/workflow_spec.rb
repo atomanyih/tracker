@@ -1,44 +1,93 @@
 require 'tmpdir'
 
 describe 'workflow' do
-  it 'does' do
+  before do
     build_and_install_gem
+  end
 
-    in_git_repo do |repo_path|
-      add_new_file_to_commit(repo_path, filename: 'file.txt')
+  it 'sets story id and finishes it via commit message' do
+    Workflow.in_git_repo do |flow|
+      flow.add_new_file_to_commit(filename: 'file.txt')
 
-      set_current_story(repo_path, story_id: 12345)
-      expect(commit(repo_path, commit_message: 'adds new file')).to include('[#12345]')
+      flow.set_current_story(story_id: '12345')
+      expect(
+        flow.commit(commit_message: 'adds new file')
+      ).to include('[#12345]')
 
-      add_new_file_to_commit(repo_path, filename: 'other_file.txt')
+      expect(
+        flow.get_current_story
+      ).to include('12345')
 
-      commit(repo_path, commit_message: 'adds other file [finishes #12345]')
+      flow.add_new_file_to_commit(filename: 'other_file.txt')
 
-      add_new_file_to_commit(repo_path, filename: 'another_file.txt')
+      flow.commit(commit_message: 'adds other file [finishes #12345]')
 
-      expect(commit(repo_path, commit_message: 'adds another file')).not_to include('12345')
+      flow.add_new_file_to_commit(filename: 'another_file.txt')
+
+      expect(
+        flow.commit(commit_message: 'adds another file')
+      ).not_to include('12345')
     end
   end
 
-  def in_git_repo(&blk)
-    Dir.mktmpdir do |repo_path|
-      `cd #{repo_path} && git init`
+  it 'clears story id via cli' do
+    Workflow.in_git_repo do |flow|
+      flow.set_current_story(story_id: '12345')
 
-      blk.call repo_path
+      flow.add_new_file_to_commit(filename: 'file.txt')
+      expect(
+        flow.commit(commit_message: 'adds new file')
+      ).to include('[#12345]')
+
+      flow.clear_current_story
+
+      flow.add_new_file_to_commit(filename: 'another_file.txt')
+
+      expect(
+        flow.get_current_story
+      ).to eq("\n")
+
+      expect(
+        flow.commit(commit_message: 'adds another file')
+      ).not_to include('12345')
     end
   end
 
-  def set_current_story(repo_path, story_id:)
-    `cd #{repo_path} && story #{story_id}`
-  end
+  class Workflow
+    def self.in_git_repo(&blk)
+      Dir.mktmpdir do |repo_path|
+        `cd #{repo_path} && git init`
 
-  def add_new_file_to_commit(repo_path, filename:)
-    `cd #{repo_path} && echo some_text > #{filename}`
-    `cd #{repo_path} && git add #{filename}`
-  end
+        blk.call Workflow.new(repo_path: repo_path)
+      end
+    end
 
-  def commit(repo_path, commit_message:)
-    `cd #{repo_path} && git commit -m "#{commit_message}"`
+    def initialize(repo_path:)
+      @repo_path = repo_path
+    end
+
+    attr_reader :repo_path
+
+    def set_current_story(story_id:)
+      `cd #{repo_path} && story #{story_id}`
+    end
+
+    def get_current_story
+      `cd #{repo_path} && story`
+    end
+
+    def clear_current_story
+      `cd #{repo_path} && story finish`
+    end
+
+    def add_new_file_to_commit(filename:)
+      `cd #{repo_path} && echo some_text > #{filename}`
+      `cd #{repo_path} && git add #{filename}`
+    end
+
+    def commit(commit_message:)
+      `cd #{repo_path} && git commit -m "#{commit_message}"`
+    end
   end
 
   def build_and_install_gem
