@@ -26,8 +26,8 @@ TrackerGitHook::PrepareCommitMsg.new.prepare message_file_path: ARGV[0]" $1
   class CheckStoryIdHook
     def script
       <<-BASH
-/usr/bin/env ruby -e "require 'tracker_git_hook/post_commit';
-TrackerGitHook::PostCommit.new.run(message_file_path: ARGV[0])" $1
+/usr/bin/env ruby -e "require 'tracker_git_hook/commit_msg';
+TrackerGitHook::CommitMsg.new.run(message_file_path: ARGV[0])" $1
       BASH
     end
 

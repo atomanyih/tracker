@@ -2,7 +2,7 @@ require 'tracker_git_hook/repo'
 require 'tracker_git_hook/check_story_status'
 
 module TrackerGitHook
-  class PostCommit
+  class CommitMsg
     def run(message_file_path:)
       message = File.read(message_file_path)
 
