@@ -1,5 +1,5 @@
 module TrackerGitHook
-  class CheckStoryStatus
+  class StoryStatusChecker
     def initialize(repo:)
       @repo = repo
     end

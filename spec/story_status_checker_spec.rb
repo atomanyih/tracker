@@ -1,7 +1,7 @@
-require 'tracker_git_hook/check_story_status'
+require 'tracker_git_hook/story_status_checker'
 
 module TrackerGitHook
-  describe CheckStoryStatus do
+  describe StoryStatusChecker do
     let(:message) { <<-TEXT }
 [#{keyword}   ##{message_story_id}]
           TEXT
@@ -16,7 +16,7 @@ module TrackerGitHook
       context 'story id matches current story' do
         it 'clears the story id' do
           expect(repo).to receive(:clear_story_id)
-          CheckStoryStatus.new(repo: repo).check(message)
+          StoryStatusChecker.new(repo: repo).check(message)
         end
       end
 
@@ -25,7 +25,7 @@ module TrackerGitHook
 
         it 'does not clear the story id' do
           expect(repo).not_to receive(:clear_story_id)
-          CheckStoryStatus.new(repo: repo).check(message)
+          StoryStatusChecker.new(repo: repo).check(message)
         end
       end
     end
@@ -35,7 +35,7 @@ module TrackerGitHook
 
       it 'does not clear story id' do
         expect(repo).not_to receive(:clear_story_id)
-        CheckStoryStatus.new(repo: repo).check(message)
+        StoryStatusChecker.new(repo: repo).check(message)
       end
     end
   end
