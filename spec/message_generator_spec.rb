@@ -54,6 +54,20 @@ hey I have a tracker story
       end
     end
 
+    context 'when there are no commented lines' do
+      it 'adds the tracker story' do
+        message = MessageGenerator.new.generate(original_message: <<-TEXT, story_id: 12345)
+where's my tracker story
+
+        TEXT
+
+        expect(message).to eq(<<-TEXT)
+where's my tracker story
+[#12345]
+        TEXT
+      end
+    end
+
     context 'whatever git ci -v puts out' do
       it 'adds the story id without messing everything up' do
         original_message = <<-TEXT

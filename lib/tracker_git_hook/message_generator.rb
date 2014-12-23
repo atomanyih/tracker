@@ -4,12 +4,8 @@ module TrackerGitHook
       unless message_is_tagged?(original_message)
         message_lines = original_message.split("\n")
 
-        split_index = message_lines.find_index(&method(:is_info_line?))
+        new_message = insert_into_message(message_lines, "[##{story_id}]")
 
-        message_body = message_lines.slice(0, split_index)
-        message_info = message_lines[split_index..-1]
-
-        new_message = message_body << ["[##{story_id}]",''] << message_info << ['']
         new_message.join("\n")
       else
         original_message
@@ -20,6 +16,18 @@ module TrackerGitHook
 
     def message_is_tagged?(original_message)
       original_message.match(/\[.*#\d*\]/)
+    end
+
+    def insert_into_message(message_lines, story_line)
+        split_index = message_lines.find_index(&method(:is_info_line?))
+
+        if split_index
+          message_body = message_lines[0..split_index-1]
+          message_info = message_lines[split_index..-1]
+          message_body << [story_line,''] << message_info << ['']
+        else
+          message_lines << [story_line,'']
+        end
     end
 
     def is_info_line?(line)
