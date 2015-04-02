@@ -5,7 +5,7 @@ module TrackerGitHook
     end
 
     def check(message)
-      if contains_completion_keyword?(message) && contains_current_story_id?(message)
+      if repo.current_story_id && contains_completion_keyword?(message) && contains_current_story_id?(message)
         repo.clear_story_id
       end
     end

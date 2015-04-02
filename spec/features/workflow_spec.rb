@@ -50,6 +50,12 @@ describe 'workflow' do
       expect(
         flow.commit(commit_message: 'adds another file')
       ).not_to include('12345')
+
+      flow.add_new_file_to_commit(filename: 'a_different_file.txt')
+
+      expect(
+        flow.commit(commit_message: 'adds another file [FINISHES#54321]')
+      ).not_to include('12345')
     end
   end
 
