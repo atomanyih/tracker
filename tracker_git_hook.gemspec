@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'tracker_git_hook'
-  s.version = '1.0.0'
+  s.version = '1.0.1'
 
   s.summary = 'Simple command-line tool to tag stories from Pivotal Tracker in git commits'
   s.description = 'Simple command-line tool to tag stories from Pivotal Tracker in git commits. Uses git hooks.'
